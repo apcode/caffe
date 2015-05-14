@@ -224,15 +224,16 @@ def _Net_forward_backward_all(self, blobs=None, diffs=None, **kwargs):
     return all_outs, all_diffs
 
 
-def _Net_set_input_arrays(self, data, labels):
+def _Net_set_input_arrays(self, data, labels, layer_name=""):
     """
     Set input arrays of the in-memory MemoryDataLayer.
     (Note: this is only for networks declared with the memory data layer.)
+    If layer_name is "" then use first layer.
     """
     if labels.ndim == 1:
         labels = np.ascontiguousarray(labels[:, np.newaxis, np.newaxis,
                                              np.newaxis])
-    return self._set_input_arrays(data, labels)
+    return self._set_input_arrays(data, labels, layer_name)
 
 
 def _Net_batch(self, blobs):
