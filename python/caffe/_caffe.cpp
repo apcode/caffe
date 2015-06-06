@@ -54,9 +54,9 @@ void CheckContiguousArray(PyArrayObject* arr, string name,
   if (!(PyArray_FLAGS(arr) & NPY_ARRAY_C_CONTIGUOUS)) {
     throw std::runtime_error(name + " must be C contiguous");
   }
-  if (PyArray_NDIM(arr) != 4) {
-    throw std::runtime_error(name + " must be 4-d");
-  }
+  //if (PyArray_NDIM(arr) != 4) {
+  //  throw std::runtime_error(name + " must be 4-d");
+  //}
   if (PyArray_TYPE(arr) != NPY_FLOAT32) {
     throw std::runtime_error(name + " must be float32");
   }
@@ -64,7 +64,9 @@ void CheckContiguousArray(PyArrayObject* arr, string name,
     throw std::runtime_error(name + " has wrong number of channels");
   }
   if (PyArray_DIMS(arr)[2] != height) {
-    throw std::runtime_error(name + " has wrong height");
+    stringstream os;
+    os << PyArray_DIMS(arr)[2] << " " << height;
+    throw std::runtime_error(name + " has wrong height " + os.str());
   }
   if (PyArray_DIMS(arr)[3] != width) {
     throw std::runtime_error(name + " has wrong width");
@@ -120,9 +122,9 @@ void Net_SetInputArrays(Net<Dtype>* net, bp::object data_obj,
       reinterpret_cast<PyArrayObject*>(data_obj.ptr());
   PyArrayObject* labels_arr =
       reinterpret_cast<PyArrayObject*>(labels_obj.ptr());
-  CheckContiguousArray(data_arr, "data array", md_layer->channels(),
-      md_layer->height(), md_layer->width());
-  CheckContiguousArray(labels_arr, "labels array", 1, 1, 1);
+  //CheckContiguousArray(data_arr, "data array", md_layer->channels(),
+  //    md_layer->height(), md_layer->width());
+  //CheckContiguousArray(labels_arr, "labels array", 1, 1, 1);
   if (PyArray_DIMS(data_arr)[0] != PyArray_DIMS(labels_arr)[0]) {
     throw std::runtime_error("data and labels must have the same first"
         " dimension");
